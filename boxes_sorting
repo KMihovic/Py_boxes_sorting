@@ -1,0 +1,85 @@
+import random
+
+
+#  Stvaranje random liste od 10 kutija_________________________________________
+box_list = []
+for i in range(1, 11):
+    x, y, z = random.randint(1, 10), random.randint(1, 10), random.randint(1, 10)
+    box = [x, y, z]
+    box.sort()
+    box_list.append(box)
+box_list.sort()  # Sortirana lista sa 10 random kutija
+
+print("Lista kutija poredanih po sirini, duzini, visini:")
+for i in box_list:
+    print(i)
+
+#  main_list je lista poredana po zbroju (sirina + duzina)_____________________
+loop = 0
+main_list = []
+num = len(box_list)
+while loop < num:
+    min_box = box_list[0]
+    min_val = box_list[0][0] + box_list[0][1]
+    for val in box_list:
+        if (val[0] + val[1]) < min_val:
+            min_val = val[0] + val[1]
+            min_box = val
+    main_list.append(min_box)  # Kreirana lista kutija po redu (sirina + duzina)
+    box_list.remove(min_box)
+    loop += 1
+
+# print() # TODO: izbrisat ova 3 reda - sluze za test
+# print("Poredano po sirina + duzina:")
+# for i in main_list:
+#     print(i)
+
+#  Najvisa hrpa - lista poredana od najmanje kutije (sirina i duzina) prema najvecoj
+first_list = []
+bin_list = []
+sirina = 1
+duzina = 1
+for i in main_list:
+    if i[0] >= sirina and i[1] >= duzina:
+        first_list.append(i)
+        sirina = i[0]
+        duzina = i[1]
+    else:
+        bin_list.append(i)  # Na kraju petlje daje listu preostalih kutija
+bin_list.sort()
+
+visina = 0
+print("\nKombinacija koja cini najvisu hrpu:")
+for i in first_list:
+    visina += i[2]
+    print(i)
+print(f"Najvisa hrpa u ovom slucaju iznosi {visina}.\n")
+
+# Zadatak 2: min broj hrpa_____________________________________________________
+
+x_list = []
+y_list = []
+sirina = 1
+duzina = 1
+num = 1
+while len(bin_list) > 0:
+    for i in bin_list:
+        if i[0] >= sirina and i[1] >= duzina:
+            x_list.append(i)
+            sirina = i[0]
+            duzina = i[1]
+        else:
+            y_list.append(i)  # Na kraju petlje daje listu preostalih kutija
+    x_list.sort()
+    print("Sljedeca hrpa:")
+    for i in x_list:
+        print(i)
+    print()
+    bin_list = y_list
+    y_list = []
+    x_list = []
+    sirina = 1
+    duzina = 1
+    num += 1
+
+print(f"Minimalni broj hrpa: {num}.")
